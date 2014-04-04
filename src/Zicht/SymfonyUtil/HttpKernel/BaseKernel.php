@@ -42,8 +42,9 @@ abstract class BaseKernel extends Kernel
      */
     public function __construct($environment = null, $debug = null)
     {
+        $environment = $environment ?: getenv('APPLICATION_ENV');
         parent::__construct(
-            $environment ?: getenv('APPLICATION_ENV'),
+            $environment,
             null === $debug
                 ? in_array($environment, self::$DEBUG_ENVS)
                 : $debug
