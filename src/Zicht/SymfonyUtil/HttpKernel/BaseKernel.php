@@ -81,7 +81,7 @@ abstract class BaseKernel extends Kernel
     {
         // do an early 404 detection for assets and media
         if ($type === self::MASTER_REQUEST) {
-            foreach (self::$STATIC_CONTENT_PATTERN as $ptn) {
+            foreach (static::$STATIC_CONTENT_PATTERN as $ptn) {
                 if (preg_match($ptn, $request->getRequestUri(), $m)) {
                     if (!is_file($this->getWebDir() . $m[1])) {
                         return $this->createDefaultNotFoundResponse($m[1]);
