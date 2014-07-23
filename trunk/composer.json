@@ -1,0 +1,11 @@
+{
+     "name": "zicht/symfony-util",
+     "description": "Non-bundle utilities for Symfony",
+     "require": {"php": ">=5.3"},
+     "require-dev": {"symfony/http-kernel": "*@stable" },
+     "authors": [{"name": "Gerard van Helden", "email": "gerard@zicht.nl"}],
+     "license": "proprietary",
+     "autoload": {
+          "psr-0": { "": ["src/", "tests/"]}
+     }
+}
