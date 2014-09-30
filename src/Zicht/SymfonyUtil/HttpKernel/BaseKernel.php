@@ -80,12 +80,18 @@ abstract class BaseKernel extends Kernel
 
         $loader->load($appRoot . '/config/config_' . $this->getEnvironment() . '.yml');
 
-        if (!$this->sandbox) {
-
-            if (is_file($sfn = sprintf('%s/config/config_%s_%s.yml', $appRoot, $this->getEnvironment(), $this->getSandbox()))) {
-                $loader->load($sfn);
+        if ($this->sandbox) {
+            foreach (glob(sprintf('%s/config/{config,parameters}_%s_%s.yml', $appRoot, $this->getEnvironment(), $this->getSandbox()), GLOB_BRACE) as $fn) {
+                $loader->load($fn);
+                /**
+                 * stop loop on config_* file because parameters
+                 * should be included in that file, else just
+                 * load will look for extra sandbox parameters
+                 */
+                if (preg_match('/config\/config_/', $fn)) {
+                    break;
+                }
             }
-
         }
 
     }
