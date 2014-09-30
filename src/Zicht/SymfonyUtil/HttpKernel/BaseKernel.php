@@ -25,6 +25,13 @@ abstract class BaseKernel extends Kernel
     public static $DEBUG_ENVS = array('development', 'testing');
 
     /**
+     * sandbox env
+     *
+     * @var string|false
+     */
+    protected $sandbox = false;
+
+    /**
      * Early 404 detector patterns
      *
      * @var array
@@ -40,9 +47,10 @@ abstract class BaseKernel extends Kernel
      * @param string $environment
      * @param bool $debug
      */
-    public function __construct($environment = null, $debug = null)
+    public function __construct($environment = null, $debug = null, $sandbox = null)
     {
-        $environment = $environment ?: getenv('APPLICATION_ENV');
+        $environment   = $environment ?: getenv('APPLICATION_ENV');
+        $this->sandbox = $sandbox     ?: getenv('SANDBOX_ID');
 
         $debug = (
             null === $debug
@@ -60,7 +68,7 @@ abstract class BaseKernel extends Kernel
      */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $appRoot = $this->getRootDir();
+        $appRoot     = $this->getRootDir();
 
         foreach ($this->getBundles() as $n => $bundle) {
             $bundleName = Str::uscore(Str::rstrip(Str::classname($n), 'Bundle'));
@@ -71,6 +79,15 @@ abstract class BaseKernel extends Kernel
         }
 
         $loader->load($appRoot . '/config/config_' . $this->getEnvironment() . '.yml');
+
+        if (!$this->sandbox) {
+
+            if (is_file($sfn = sprintf('%s/config/config_%s_%s.yml', $appRoot, $this->getEnvironment(), $this->getSandbox()))) {
+                $loader->load($sfn);
+            }
+
+        }
+
     }
 
 
@@ -113,5 +130,21 @@ abstract class BaseKernel extends Kernel
     public function getWebDir()
     {
         return $this->getRootDir() . '/../web/';
+    }
+
+    /**
+     * @return string
+     */
+    public function getSandbox()
+    {
+        return $this->sandbox;
+    }
+
+    /**
+     * @param string $sandbox
+     */
+    public function setSandbox($sandbox)
+    {
+        $this->sandbox = $sandbox;
     }
 }
