@@ -25,13 +25,6 @@ abstract class BaseKernel extends Kernel
     public static $DEBUG_ENVS = array('development', 'testing');
 
     /**
-     * sandbox env
-     *
-     * @var string|false
-     */
-    protected $sandbox = false;
-
-    /**
      * Early 404 detector patterns
      *
      * @var array
@@ -47,10 +40,9 @@ abstract class BaseKernel extends Kernel
      * @param string $environment
      * @param bool $debug
      */
-    public function __construct($environment = null, $debug = null, $sandbox = null)
+    public function __construct($environment = null, $debug = null)
     {
         $environment   = $environment ?: getenv('APPLICATION_ENV');
-        $this->sandbox = $sandbox     ?: getenv('SANDBOX_ID');
 
         $debug = (
             null === $debug
@@ -78,22 +70,13 @@ abstract class BaseKernel extends Kernel
             }
         }
 
-        $loader->load($appRoot . '/config/config_' . $this->getEnvironment() . '.yml');
-
-        if ($this->sandbox) {
-            foreach (glob(sprintf('%s/config/{config,parameters}_%s_%s.yml', $appRoot, $this->getEnvironment(), $this->getSandbox()), GLOB_BRACE) as $fn) {
-                $loader->load($fn);
-                /**
-                 * stop loop on config_* file because parameters
-                 * should be included in that file, else just
-                 * load will look for extra sandbox parameters
-                 */
-                if (preg_match('/config\/config_/', $fn)) {
-                    break;
-                }
+        // prefer 'config_local.yml' if it exists
+        foreach ($this->getCandidateConfigFiles() as $configFile) {
+            if (is_file($configFile)) {
+                $loader->load($configFile);
+                break;
             }
         }
-
     }
 
 
@@ -138,19 +121,17 @@ abstract class BaseKernel extends Kernel
         return $this->getRootDir() . '/../web/';
     }
 
-    /**
-     * @return string
-     */
-    public function getSandbox()
-    {
-        return $this->sandbox;
-    }
 
     /**
-     * @param string $sandbox
+     * Returns the file names that are candidate for the main configuration.
+     *
+     * @return array
      */
-    public function setSandbox($sandbox)
+    protected function getCandidateConfigFiles()
     {
-        $this->sandbox = $sandbox;
+        return array(
+            $this->getRootDir() . '/config/config_local.yml',
+            $this->getRootDir() . '/config/config_' . $this->getEnvironment() . '.yml'
+        );
     }
 }
