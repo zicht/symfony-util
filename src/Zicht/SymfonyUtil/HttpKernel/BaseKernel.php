@@ -31,7 +31,7 @@ abstract class BaseKernel extends Kernel
      */
     protected static $STATIC_CONTENT_PATTERN = array(
         // pattern means: "/media/cache/[imagine_filter_name]/media..."
-        '!^(?:/media/cache/[^/]+)?/((?:media|bundles).*)!',
+        '!^(?:/media/cache(?:/resolve)?/[^/]+)?/((?:media|bundles).*)!',
     );
 
     /**
