@@ -2,8 +2,8 @@
 
 namespace ZichtTest\SymfonyUtil\HttpKernel;
 
-use \PHPUnit_Framework_Testcase;
-use \Zicht\SymfonyUtil\HttpKernel\BaseKernel;
+use PHPUnit_Framework_Testcase;
+use Zicht\SymfonyUtil\HttpKernel\BaseKernel;
 
 class MyKernel extends BaseKernel
 {
@@ -33,5 +33,4 @@ class BaseKernelTest extends \PHPUnit_Framework_TestCase
             array('production', false),
         );
     }
-
 }

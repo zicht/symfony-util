@@ -5,12 +5,13 @@
  */
 namespace Zicht\SymfonyUtil\HttpKernel;
 
-use \Symfony\Component\Config\Loader\LoaderInterface;
-use \Symfony\Component\HttpFoundation\Request;
-use \Symfony\Component\HttpFoundation\Response;
-use \Symfony\Component\HttpKernel\HttpKernelInterface;
-use \Symfony\Component\HttpKernel\Kernel;
-use \Zicht\Util\Str;
+use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\Kernel;
+use Zicht\Util\Str;
 
 /**
  * Base kernel for Symfony apps, using the APPLICATION_ENV parameter and utilizing autoloading bundle configs.
@@ -34,6 +35,14 @@ abstract class BaseKernel extends Kernel
         '!^(?:/media/cache(?:/resolve)?/[^/]+)?/((?:media|bundles).*)!',
     );
 
+    protected $sessionConfig = 'config/session.php';
+
+    /**
+     * @var HandlerInterface[]
+     */
+    protected $earlyHandlers = array();
+
+
     /**
      * Overrides the default constructor to use APPLICATION_ENV and default debugging.
      *
@@ -52,6 +61,21 @@ abstract class BaseKernel extends Kernel
 
         parent::__construct($environment, $debug);
         umask(0);
+
+        $this->earlyHandlers = $this->registerEarlyHandlers();
+    }
+
+
+    /**
+     * Returns an array of handlers that can deliver a response based on the request without booting the kernel
+     *
+     * @return array
+     */
+    protected function registerEarlyHandlers()
+    {
+        return array(
+            new StaticMediaNotFoundHandler(static::$STATIC_CONTENT_PATTERN, $this->getWebDir())
+        );
     }
 
 
@@ -61,6 +85,8 @@ abstract class BaseKernel extends Kernel
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $appRoot     = $this->getRootDir();
+
+        $loader->load($appRoot . '/config/session.php');
 
         foreach ($this->getBundles() as $n => $bundle) {
             $bundleName = Str::uscore(Str::rstrip(Str::classname($n), 'Bundle'));
@@ -85,29 +111,54 @@ abstract class BaseKernel extends Kernel
      */
     public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
     {
-        // do an early 404 detection for assets and media
+        // do an early request handling for handlers that don't need the service container.
         if ($type === self::MASTER_REQUEST) {
-            foreach (static::$STATIC_CONTENT_PATTERN as $ptn) {
-                if (preg_match($ptn, $request->getRequestUri(), $m)) {
-                    if (!is_file($this->getWebDir() . $m[1])) {
-                        return $this->createDefaultNotFoundResponse($m[1]);
-                    }
+            $this->attachSession($request);
+
+            foreach ($this->earlyHandlers as $handler) {
+                if ($response = $handler->handle($request)) {
+                    return $response;
                 }
             }
         }
-        return parent::handle($request, $type, $catch);
+        $ret = parent::handle($request, $type, $catch);
+        return $ret;
     }
 
 
     /**
-     * Creates the default 404 response for early 404 detection
+     * Attach a session to the request.
      *
-     * @param string $path
-     * @return Response
+     * @param Request $request
      */
-    protected function createDefaultNotFoundResponse($path)
+    protected function attachSession(Request $request)
     {
-        return new Response('File not found: ' . $path, 404);
+        $container = new Container();
+        require_once $this->getRootDir() . '/' . $this->sessionConfig;
+
+        if ($request->cookies->has($container->getParameter('session.name'))) {
+            if (is_readable($this->getCacheDir() . '/classes.php')) {
+                require_once $this->getCacheDir() . '/classes.php';
+            }
+            $class = $container->getParameter('session.handler.class');
+
+            // TODO consider generating this code based on the ContainerBuilder / PhpDumper from Symfony DI.
+            $session = new Session\Session(
+                new Session\Storage\NativeSessionStorage(
+                    array(
+                        'cookie_path'   => $container->getParameter('session.cookie_path'),
+                        'cookie_domain' => $container->getParameter('session.cookie_domain'),
+                        'name'          => $container->getParameter('session.name')
+                    ),
+                    new $class($container->getParameter('session.handler.save_path')),
+                    new Session\Storage\MetadataBag()
+                ),
+                new Session\Attribute\AttributeBag(),
+                new Session\Flash\FlashBag()
+            );
+
+            $request->setSession($session);
+        }
     }
 
 
