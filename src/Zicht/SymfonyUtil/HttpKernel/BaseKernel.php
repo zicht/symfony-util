@@ -42,6 +42,11 @@ abstract class BaseKernel extends Kernel
      */
     protected $earlyHandlers = array();
 
+    /**
+     * @var null
+     */
+    protected $lightweightContainer = null;
+
 
     /**
      * Overrides the default constructor to use APPLICATION_ENV and default debugging.
@@ -125,6 +130,19 @@ abstract class BaseKernel extends Kernel
         return $ret;
     }
 
+    /**
+     * Boots the current kernel.
+     *
+     * @api
+     */
+    public function boot()
+    {
+        parent::boot();
+        if ($this->lightweightContainer->has('session')) {
+            $this->container->set('session', $this->lightweightContainer->get('session'));
+        }
+    }
+
 
     /**
      * Attach a session to the request.
@@ -133,7 +151,9 @@ abstract class BaseKernel extends Kernel
      */
     protected function attachSession(Request $request)
     {
-        $container = new Container();
+        // TODO consider generating this code based on the ContainerBuilder / PhpDumper from Symfony DI.
+
+        $this->lightweightContainer = $container = new Container();
         require_once $this->getRootDir() . '/' . $this->sessionConfig;
 
         if ($request->cookies->has($container->getParameter('session.name'))) {
@@ -142,7 +162,6 @@ abstract class BaseKernel extends Kernel
             }
             $class = $container->getParameter('session.handler.class');
 
-            // TODO consider generating this code based on the ContainerBuilder / PhpDumper from Symfony DI.
             $session = new Session\Session(
                 new Session\Storage\NativeSessionStorage(
                     array(
@@ -156,7 +175,7 @@ abstract class BaseKernel extends Kernel
                 new Session\Attribute\AttributeBag(),
                 new Session\Flash\FlashBag()
             );
-
+            $this->lightweightContainer->set('session', $session);
             $request->setSession($session);
         }
     }
