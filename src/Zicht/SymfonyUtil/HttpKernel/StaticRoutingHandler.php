@@ -43,7 +43,7 @@ class StaticRoutingHandler implements HandlerInterface
 
         if (0 === strpos($requestUri, $this->basePath)) {
             foreach ($this->routes as $pattern => $controller) {
-                if (preg_match('!' . preg_quote($this->basePath . $pattern, '!') . '!A', $requestUri)) {
+                if (preg_match('!^' . preg_quote($this->basePath . $pattern, '!') . '$!', $requestUri)) {
                     return call_user_func($controller, $request);
                 }
             }
