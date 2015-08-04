@@ -131,9 +131,7 @@ abstract class BaseKernel extends Kernel
     }
 
     /**
-     * Boots the current kernel.
-     *
-     * @api
+     * @{inheritDoc}
      */
     public function boot()
     {
@@ -148,12 +146,19 @@ abstract class BaseKernel extends Kernel
      * Attach a session to the request.
      *
      * @param Request $request
+     * @return void
      */
     protected function attachSession(Request $request)
     {
         // TODO consider generating this code based on the ContainerBuilder / PhpDumper from Symfony DI.
+        $this->lightweightContainer
+            = $container
+            = new Container();
 
-        $this->lightweightContainer = $container = new Container();
+        foreach ($this->getKernelParameters() as $param => $value) {
+            $this->lightweightContainer->setParameter($param, $value);
+        }
+
         require_once $this->getRootDir() . '/' . $this->sessionConfig;
 
         if ($request->cookies->has($container->getParameter('session.name'))) {
