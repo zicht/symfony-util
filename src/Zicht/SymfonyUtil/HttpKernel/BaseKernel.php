@@ -136,7 +136,7 @@ abstract class BaseKernel extends Kernel
     public function boot()
     {
         parent::boot();
-        if ($this->lightweightContainer->has('session')) {
+        if ($this->lightweightContainer&& $this->lightweightContainer->has('session')) {
             $this->container->set('session', $this->lightweightContainer->get('session'));
         }
     }
@@ -151,13 +151,7 @@ abstract class BaseKernel extends Kernel
     protected function attachSession(Request $request)
     {
         // TODO consider generating this code based on the ContainerBuilder / PhpDumper from Symfony DI.
-        $this->lightweightContainer
-            = $container
-            = new Container();
-
-        foreach ($this->getKernelParameters() as $param => $value) {
-            $this->lightweightContainer->setParameter($param, $value);
-        }
+        $container = $this->bootLightweightContainer();
 
         require_once $this->getRootDir() . '/' . $this->sessionConfig;
 
@@ -185,6 +179,20 @@ abstract class BaseKernel extends Kernel
         }
     }
 
+
+    protected function bootLightweightContainer()
+    {
+        if (null === $this->lightweightContainer) {
+            $this->lightweightContainer
+                = $container
+                = new Container();
+
+            foreach ($this->getKernelParameters() as $param => $value) {
+                $this->lightweightContainer->setParameter($param, $value);
+            }
+        }
+        return $this->lightweightContainer;
+    }
 
     /**
      * Returns the path to the web dir.
