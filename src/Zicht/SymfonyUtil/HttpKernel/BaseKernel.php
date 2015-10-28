@@ -90,8 +90,10 @@ abstract class BaseKernel extends Kernel
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $appRoot     = $this->getRootDir();
-
-        $loader->load($appRoot . '/config/session.php');
+    
+        if (@is_readable($this->getRootDir() . '/' . $this->sessionConfig)) {
+            $loader->load($this->getRootDir() . '/' . $this->sessionConfig);
+        }
 
         foreach ($this->getBundles() as $n => $bundle) {
             $bundleName = Str::uscore(Str::rstrip(Str::classname($n), 'Bundle'));
@@ -153,29 +155,31 @@ abstract class BaseKernel extends Kernel
         // TODO consider generating this code based on the ContainerBuilder / PhpDumper from Symfony DI.
         $container = $this->bootLightweightContainer();
 
-        require_once $this->getRootDir() . '/' . $this->sessionConfig;
+        if (@is_readable($this->getRootDir() . '/' . $this->sessionConfig)) {
+            require_once $this->getRootDir() . '/' . $this->sessionConfig;
 
-        if ($request->cookies->has($container->getParameter('session.name'))) {
-            if (is_readable($this->getCacheDir() . '/classes.php')) {
-                require_once $this->getCacheDir() . '/classes.php';
-            }
-            $class = $container->getParameter('session.handler.class');
+            if ($request->cookies->has($container->getParameter('session.name'))) {
+                if (is_readable($this->getCacheDir() . '/classes.php')) {
+                    require_once $this->getCacheDir() . '/classes.php';
+                }
+                $class = $container->getParameter('session.handler.class');
 
-            $session = new Session\Session(
-                new Session\Storage\NativeSessionStorage(
-                    array(
-                        'cookie_path'   => $container->getParameter('session.cookie_path'),
-                        'cookie_domain' => $container->getParameter('session.cookie_domain'),
-                        'name'          => $container->getParameter('session.name')
+                $session = new Session\Session(
+                    new Session\Storage\NativeSessionStorage(
+                        array(
+                            'cookie_path'   => $container->getParameter('session.cookie_path'),
+                            'cookie_domain' => $container->getParameter('session.cookie_domain'),
+                            'name'          => $container->getParameter('session.name')
+                        ),
+                        new $class($container->getParameter('session.handler.save_path')),
+                        new Session\Storage\MetadataBag()
                     ),
-                    new $class($container->getParameter('session.handler.save_path')),
-                    new Session\Storage\MetadataBag()
-                ),
-                new Session\Attribute\AttributeBag(),
-                new Session\Flash\FlashBag()
-            );
-            $this->lightweightContainer->set('session', $session);
-            $request->setSession($session);
+                    new Session\Attribute\AttributeBag(),
+                    new Session\Flash\FlashBag()
+                );
+                $this->lightweightContainer->set('session', $session);
+                $request->setSession($session);
+            }
         }
     }
 
