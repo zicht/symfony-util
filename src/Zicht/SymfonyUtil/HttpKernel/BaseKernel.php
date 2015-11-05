@@ -91,7 +91,7 @@ abstract class BaseKernel extends Kernel
     {
         $appRoot     = $this->getRootDir();
     
-        if (@is_readable($this->getRootDir() . '/' . $this->sessionConfig)) {
+        if ($this->sessionConfig && @is_readable($this->getRootDir() . '/' . $this->sessionConfig)) {
             $loader->load($this->getRootDir() . '/' . $this->sessionConfig);
         }
 
@@ -155,7 +155,7 @@ abstract class BaseKernel extends Kernel
         // TODO consider generating this code based on the ContainerBuilder / PhpDumper from Symfony DI.
         $container = $this->bootLightweightContainer();
 
-        if (@is_readable($this->getRootDir() . '/' . $this->sessionConfig)) {
+        if ($this->sessionConfig && @is_readable($this->getRootDir() . '/' . $this->sessionConfig)) {
             require_once $this->getRootDir() . '/' . $this->sessionConfig;
 
             if ($request->cookies->has($container->getParameter('session.name'))) {
