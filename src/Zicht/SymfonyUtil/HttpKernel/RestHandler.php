@@ -31,15 +31,15 @@ class RestHandler implements HandlerInterface
      */
     public function handle(Request $request)
     {
-        $requestUri = $request->getRequestUri();
+        $pathInfo = $request->getPathInfo();
 
-        if (0 === strpos($requestUri, $this->basePath)) {
+        if (0 === strpos($pathInfo, $this->basePath)) {
             foreach ($this->routes as $config) {
                 list($method, $pattern, $controller) = $config;
 
                 if (
                     $request->getMethod() === strtoupper($method)
-                    && preg_match('!^' . preg_quote($this->basePath . $pattern, '!') . '$!', $requestUri)
+                    && preg_match('!^' . preg_quote($this->basePath . $pattern, '!') . '$!', $request->getPathInfo())
                 ) {
                     return call_user_func($controller, $request);
                 }
