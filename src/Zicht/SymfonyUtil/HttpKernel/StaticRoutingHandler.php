@@ -6,9 +6,6 @@
 
 namespace Zicht\SymfonyUtil\HttpKernel;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-
 /**
  * The static routing handler can be used to route requests (before booting the service container) to lightweight
  * controllers, i.e. controllers that either handle their own dependencies or they have none and thus don't need to
