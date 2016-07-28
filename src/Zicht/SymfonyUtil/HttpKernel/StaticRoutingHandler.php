@@ -20,14 +20,14 @@ class StaticRoutingHandler extends RestHandler
      * under the basePath and routed to the specified callables, if they match.
      *
      * @param string $basePath
-     * @param array<string, callable> $routes
+     * @param array<string,callable> $routes
      */
     public function __construct($basePath, $routes)
     {
         parent::__construct(
             $basePath,
             array_map(
-                function($k) use($routes) {
+                function ($k) use ($routes) {
                     return ['GET', $k, $routes[$k]];
                 },
                 array_keys($routes)
