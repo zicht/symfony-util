@@ -98,7 +98,9 @@ abstract class BaseKernel extends Kernel
         foreach ($this->getBundles() as $n => $bundle) {
             $bundleName = Str::uscore(Str::rstrip(Str::classname($n), 'Bundle'));
 
-            if (is_file($fn = $appRoot . '/config/bundles/' . $bundleName . '.yml')) {
+            if (is_file($fn = $appRoot . '/config/bundles/' . $bundleName . '_local.yml')) {
+                $loader->load($fn);
+            } else if (is_file($fn = $appRoot . '/config/bundles/' . $bundleName . '.yml')) {
                 $loader->load($fn);
             }
         }
