@@ -1,10 +1,11 @@
-#!/usr/bin/env php
 <?php
 
-umask(0000);
-set_time_limit(0);
+require_once __DIR__.'/../app/autoload.php';
+require_once __DIR__.'/../app/bootstrap.php.cache';
+require_once __DIR__.'/../app/AppKernel.php';
 
-require_once __DIR__.'/bootstrap.php.cache';
-require_once __DIR__.'/AppKernel.php';
-
-(new AppKernel())->console();
+if (preg_match('!^/admin/!', $_SERVER['REQUEST_URI'])) {
+    (new AppKernel('admin'))->web();
+} else {
+    (new AppKernel('site'))->web();
+}

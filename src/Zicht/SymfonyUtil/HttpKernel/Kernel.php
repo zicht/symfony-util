@@ -50,11 +50,6 @@ abstract class Kernel extends SymfonyKernel
     protected $lightweightContainer = null;
 
     /**
-     * @var string
-     */
-    private $appName;
-
-    /**
      * Overrides the default constructor to use APPLICATION_ENV and default debugging.
      *
      * @param string $appName
@@ -117,6 +112,17 @@ abstract class Kernel extends SymfonyKernel
     }
 
 
+    /**
+     * Get all config files which should be loaded. Can be overridden for custom logic.
+     *
+     * By default, following files are loaded (relativy to `getRootDir()`)
+     *
+     * - if `config/config_local.yml` exists, load that.
+     * - if `config/config_local.yml` does not exist, load `config/config_{environment}.yml`
+     * - additionally: `config/kernel_{name}.yml`
+     *
+     * @return array
+     */
     protected function getConfigFiles()
     {
         $ret = [];
