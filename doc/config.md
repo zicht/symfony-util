@@ -1,4 +1,4 @@
-# Bundle-depdendent configuration loading
+# Bundle-dependent configuration loading
 
 The kernel checks if files are in place with the same naming convention as their DI extension would be, in the 
 `app/config/bundles/` directory. This way, bundles can easily be enabled and disabled, without the need to change the
