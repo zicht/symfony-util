@@ -1,5 +1,3 @@
-# Bundle-dependent configuration loading
-
 # Configuring multiple kernels for one main endpoint
 
 To be able to support a kernel with different sets of configurations, in 1.4 a feature was introduced to construct the 
