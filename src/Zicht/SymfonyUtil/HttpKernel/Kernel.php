@@ -51,16 +51,16 @@ abstract class Kernel extends SymfonyKernel
 
     /**
      * Overrides the default constructor to use APPLICATION_ENV and default debugging.
+     * Do not change the arguments, as Symfony will also create Kernels (e.g. from CacheClearCommand), but always with 2 arguments.
      *
-     * @param string $appName
      * @param string $environment
      * @param bool $debug
      */
-    public function __construct($name = null, $environment = null, $debug = null)
+    public function __construct($environment = null, $debug = null)
     {
         umask(0);
 
-        $this->name = $name ?: getenv('APPLICATION_NAME') ?: 'app';
+        $this->name = getenv('APPLICATION_NAME') ?: 'app';
         $environment = $environment ?: getenv('APPLICATION_ENV');
         $debug = (
             null === $debug
