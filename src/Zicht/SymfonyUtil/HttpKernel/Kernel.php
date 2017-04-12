@@ -34,7 +34,7 @@ abstract class Kernel extends SymfonyKernel
      */
     protected static $STATIC_CONTENT_PATTERN = [
         // pattern means: "/media/cache/[imagine_filter_name]/media..."
-        '!^(?:/media/cache(?:/resolve)?/[^/]+)?/((?:media|bundles).*)!',
+        '!^(?:/media/cache(?:/resolve)?/[^/]+)?/((?:media/|bundles/).*)!',
     ];
 
     protected $sessionConfig = 'config/session.php';
