@@ -271,6 +271,12 @@ abstract class Kernel extends SymfonyKernel
     final public function console()
     {
         $input = new ArgvInput();
+        if (null !== ($env = $input->getParameterOption(array('--env', '-e'), null))) {
+            $this->environment = $env;
+        }
+        if (null !== ($debug = $input->getParameterOption(array('--no-debug'), null))) {
+            $this->debug = $debug;
+        }
         $application = new Application($this);
         return $application->run($input);
     }
