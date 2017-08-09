@@ -8,6 +8,7 @@ namespace Zicht\SymfonyUtil\HttpKernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session;
@@ -266,16 +267,14 @@ abstract class Kernel extends SymfonyKernel
      * Front controller for the command line interface (`app/console`). You can use doc/examples/console.phpcs as
      * template for `app/console`
      *
+     * @param InputInterface|null $input
+     *
      * @return int
      */
-    final public function console()
+    final public function console(InputInterface $input)
     {
-        $input = new ArgvInput();
-        if (null !== ($env = $input->getParameterOption(array('--env', '-e'), null))) {
-            $this->environment = $env;
-        }
-        if (null !== ($debug = $input->getParameterOption(array('--no-debug'), null))) {
-            $this->debug = $debug;
+        if (!$input) {
+            $input = new ArgvInput();
         }
         $application = new Application($this);
         return $application->run($input);
