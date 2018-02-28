@@ -1,3 +1,6 @@
+# 1.6.0
+- Add optional php7 support in composer.
+
 # 1.5.0
 - Changed the order of the 'named' constructor parameter to support backwards compatibility with Symfony creating kernels too.
 
