@@ -1,3 +1,7 @@
+# 2.0.0
+- Drop support for php 5.6.
+- Delete deprecated BaseKernel and fix corresponding unit tests.
+
 # 1.5.0
 - Changed the order of the 'named' constructor parameter to support backwards compatibility with Symfony creating kernels too.
 
