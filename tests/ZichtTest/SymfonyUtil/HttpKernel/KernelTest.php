@@ -2,18 +2,17 @@
 
 namespace ZichtTest\SymfonyUtil\HttpKernel;
 
-use PHPUnit_Framework_Testcase;
-use Zicht\SymfonyUtil\HttpKernel\BaseKernel;
+use Zicht\SymfonyUtil\HttpKernel\Kernel;
 
-class MyKernel extends BaseKernel
+class MyKernel extends Kernel
 {
     public function registerBundles() {}
 }
 
 /**
- * @covers \Zicht\SymfonyUtil\HttpKernel\BaseKernel 
+ * @covers \Zicht\SymfonyUtil\HttpKernel\Kernel
  */
-class BaseKernelTest extends \PHPUnit_Framework_TestCase
+class KernelTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider envs
@@ -25,6 +24,7 @@ class BaseKernelTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($env, $kernel->getEnvironment());
         $this->assertEquals($debug, $kernel->isDebug());
     }
+
     function envs() {
         return array(
             array('development', true),
