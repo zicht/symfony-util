@@ -8,13 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
-## 1.5.3
+## 1.5.4 - 2018-04-30
+### Fixed
+- Fix for percent-encoded characters in filename passed through the static media handler
+
+## 1.5.3 - 2017-08-08
 ### Fixed
 - Fixed missing support for --env and --debug flags for console commands
 
 ## 1.5.2 - 2017-04-12
 ### Fixed
-- Fixed Kernel parameter order for backward compatability
+- Fixed Kernel parameter order for backward compatibility
 
 ## 1.5.1 - 2017-04-12
 ### Fixed
