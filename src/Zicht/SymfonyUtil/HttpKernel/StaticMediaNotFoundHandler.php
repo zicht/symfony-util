@@ -46,9 +46,9 @@ class StaticMediaNotFoundHandler implements HandlerInterface
     {
         foreach ($this->staticContentPatterns as $ptn) {
             if (preg_match($ptn, $request->getRequestUri(), $m)) {
-                $url = parse_url($m[1]);
-                if (isset($url['path']) && !is_file($this->webDir . $url['path'])) {
-                    return $this->createDefaultNotFoundResponse($url['path']);
+                $path = urldecode(parse_url($m[1], PHP_URL_PATH));
+                if (!is_file($this->webDir . $path)) {
+                    return $this->createDefaultNotFoundResponse($path);
                 }
             }
         }
