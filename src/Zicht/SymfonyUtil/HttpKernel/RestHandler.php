@@ -8,6 +8,11 @@ namespace Zicht\SymfonyUtil\HttpKernel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class RestHandler
+ *
+ * @package Zicht\SymfonyUtil\HttpKernel
+ */
 class RestHandler implements HandlerInterface
 {
     /**
@@ -15,7 +20,7 @@ class RestHandler implements HandlerInterface
      * under the basePath and routed to the specified callables, if they match.
      *
      * @param string $basePath
-     * @param array<string, string, callable> $routes
+     * @param array<string,string,callable> $routes
      */
     public function __construct($basePath, $routes)
     {
@@ -37,8 +42,7 @@ class RestHandler implements HandlerInterface
             foreach ($this->routes as $config) {
                 list($method, $pattern, $controller) = $config;
 
-                if (
-                    $request->getMethod() === strtoupper($method)
+                if ($request->getMethod() === strtoupper($method)
                     && preg_match('!^' . preg_quote($this->basePath . $pattern, '!') . '$!', $request->getPathInfo())
                 ) {
                     return call_user_func($controller, $request);
