@@ -8,9 +8,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
-## 1.5.4 - 2018-04-30
+## 1.5.5 - 2018-04-30
 ### Fixed
 - Fix for percent-encoded characters in filename passed through the static media handler
+
+## 1.5.4 - 2017-08-09
+### Fixed
+- Fixed bug in console command flags fixed in version 1.5.3
 
 ## 1.5.3 - 2017-08-08
 ### Fixed
