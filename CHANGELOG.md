@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 3.0.0 - 2018-06-21
+### Added
+- Support for Symfony 3.x
+### Removed
+- Support for Symfony 2.x
+
 ## 2.0.0 - 2018-02-28
 ### Changed
 - Drop support for php 5.6.

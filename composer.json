@@ -8,8 +8,8 @@
         }
     ],
     "require": {
-        "php": "^7.0",
-        "symfony/symfony": "^2.7",
+        "php": "^7",
+        "symfony/symfony": "^3.4",
         "zicht/util": "^1.7"
     },
     "require-dev": {
