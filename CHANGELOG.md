@@ -10,7 +10,6 @@ Nothing so far
 
 ## 3.0.1 - 2018-10-08
 ### Fixed
-
 - Disable rendering of HTML in 404 of static media
 
 ## 3.0.0 - 2018-06-21
@@ -19,10 +18,18 @@ Nothing so far
 ### Removed
 - Support for Symfony 2.x
 
+## 2.0.2 - 2018-10-08
+### Fixed
+- Disable rendering of HTML in 404 of static media
+
 ## 2.0.0 - 2018-02-28
 ### Changed
 - Drop support for php 5.6.
 - Delete deprecated BaseKernel and fix corresponding unit tests.
+
+## 1.5.8 - 2018-10-08
+### Fixed
+- Disable rendering of HTML in 404 of static media
 
 ## 1.5.5 - 2018-04-30
 ### Fixed
