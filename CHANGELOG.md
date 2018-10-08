@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 3.0.1 - 2018-10-08
+### Fixed
+
+- Disable rendering of HTML in 404 of static media
+
 ## 3.0.0 - 2018-06-21
 ### Added
 - Support for Symfony 3.x
