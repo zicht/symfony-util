@@ -63,6 +63,6 @@ class StaticMediaNotFoundHandler implements HandlerInterface
      */
     protected function createDefaultNotFoundResponse($path)
     {
-        return new Response('File not found: ' . $path, 404);
+        return new Response(sprintf('File not found: %s', htmlspecialchars($path, ENT_QUOTES)), 404);
     }
 }
