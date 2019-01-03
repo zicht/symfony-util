@@ -64,7 +64,7 @@ abstract class Kernel extends SymfonyKernel
         $environment = $environment ?: getenv('APPLICATION_ENV');
         $debug = (
             null === $debug
-                ? in_array($environment, self::$DEBUG_ENVS)
+                ? in_array($environment, static::$DEBUG_ENVS)
                 : $debug
         );
 
