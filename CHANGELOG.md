@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 3.0.2 - 2019-01-03
+### Fixed
+- Use `static::` for debug-envs in `Kernel`, not `self::` as they cannot be overwritten that way
+
 ## 3.0.1 - 2018-10-08
 ### Fixed
 - Disable rendering of HTML in 404 of static media
