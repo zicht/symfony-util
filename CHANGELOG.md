@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 3.0.3 - 2019-01-21
+### Removed
+- Call to `loadClassCache` in `Kernel`, this call is deprecated and will be removed in Symfony 4
+
 ## 3.0.2 - 2019-01-03
 ### Fixed
 - Use `static::` for debug-envs in `Kernel`, not `self::` as they cannot be overwritten that way
