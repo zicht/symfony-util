@@ -288,7 +288,6 @@ abstract class Kernel extends SymfonyKernel
      */
     final public function web()
     {
-        $this->loadClassCache();
         $request = Request::createFromGlobals();
         $response = $this->handle($request);
         $response->send();
