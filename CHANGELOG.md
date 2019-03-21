@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 3.0.4 - 2019-03-21
+### Fixed
+- Forward merge `2.x`
+
 ## 3.0.3 - 2019-01-21
 ### Removed
 - Call to `loadClassCache` in `Kernel`, this call is deprecated and will be removed in Symfony 4
@@ -25,6 +29,10 @@ Nothing so far
 - Support for Symfony 3.x
 ### Removed
 - Support for Symfony 2.x
+
+## 2.1.0 - 2019-03-21
+### Added
+- `RedisSessionHandler` to resolve the passing of https://github.com/zikula/NativeSession
 
 ## 2.0.2 - 2018-10-08
 ### Fixed
