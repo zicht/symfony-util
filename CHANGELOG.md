@@ -30,6 +30,9 @@ Nothing so far
 ### Removed
 - Support for Symfony 2.x
 
+## 2.1.1 - 2020-03-31
+- Use `static::` for debug-envs in Kernel, not `self::` as they cannot be overwritten that way
+
 ## 2.1.0 - 2019-03-21
 ### Added
 - `RedisSessionHandler` to resolve the passing of https://github.com/zikula/NativeSession
