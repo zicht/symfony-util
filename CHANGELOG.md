@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 3.1.1 - 2020-08-26
+### Fixed
+- `Kernel::attachSession` will now also look for the optional `session.cookie_secure` parameter.
+
 ## 3.1.0 - 2020-08-26
 ### Added
 - `Kernel::attachSession` will now also look for the optional `session.cookie_samesite` parameter.

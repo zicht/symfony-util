@@ -201,10 +201,11 @@ abstract class Kernel extends SymfonyKernel
                 $session = new Session\Session(
                     new Session\Storage\NativeSessionStorage(
                         array(
-                            'cookie_path'   => $container->getParameter('session.cookie_path'),
                             'cookie_domain' => $container->getParameter('session.cookie_domain'),
-                            'name'          => $container->getParameter('session.name'),
+                            'cookie_path' => $container->getParameter('session.cookie_path'),
                             'cookie_samesite' => $container->hasParameter('session.cookie_samesite') ? $container->getParameter('session.cookie_samesite') : null,
+                            'cookie_secure' => $container->hasParameter('session.cookie_secure') ? $container->getParameter('session.cookie_secure') : '',
+                            'name' => $container->getParameter('session.name'),
                         ),
                         new $class($container->getParameter('session.handler.save_path')),
                         new Session\Storage\MetadataBag()
