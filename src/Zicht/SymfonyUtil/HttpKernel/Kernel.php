@@ -203,7 +203,8 @@ abstract class Kernel extends SymfonyKernel
                         array(
                             'cookie_path'   => $container->getParameter('session.cookie_path'),
                             'cookie_domain' => $container->getParameter('session.cookie_domain'),
-                            'name'          => $container->getParameter('session.name')
+                            'name'          => $container->getParameter('session.name'),
+                            'cookie_samesite' => $container->hasParameter('session.cookie_samesite') ? $container->getParameter('session.cookie_samesite') : null,
                         ),
                         new $class($container->getParameter('session.handler.save_path')),
                         new Session\Storage\MetadataBag()

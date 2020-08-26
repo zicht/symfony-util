@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 3.1.0 - 2020-08-26
+### Added
+- `Kernel::attachSession` will now also look for the optional `session.cookie_samesite` parameter.
+
 ## 3.0.4 - 2019-03-21
 ### Fixed
 - Forward merge `2.x`
@@ -76,7 +80,7 @@ Nothing so far
 
 ## 1.4.0
 ### Added
-- Add a feature where the kernel can be 'named' via a constructor parameter. 
+- Add a feature where the kernel can be 'named' via a constructor parameter.
   This way one app can support multiple types of kernels. See doc/ for more info.
 
 ## 1.3.0
