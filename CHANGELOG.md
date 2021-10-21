@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added|Changed|Deprecated|Removed|Fixed|Security
 Nothing so far
 
+## 3.2.0 - 2021-10-21
+### Added
+- Added support for Symfony 4.
+
 ## 3.1.1 - 2020-08-26
 ### Fixed
 - `Kernel::attachSession` will now also look for the optional `session.cookie_secure` parameter.
